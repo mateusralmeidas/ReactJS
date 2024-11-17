@@ -1,5 +1,6 @@
 import React from 'react'
 import './Game.css'
+import { useState, useRef } from 'react'
 
 const Game = ({verifyLetter,
    chosenWord,
@@ -10,6 +11,20 @@ const Game = ({verifyLetter,
    guesses,
    score
   }) => {
+
+    const [letter, setLetter] = useState("")
+    const letterInputRef = useRef(null);
+
+    const handleSubmit = (e)=>{
+      e.preventDefault();
+
+      verifyLetter(letter);
+
+      setLetter("")
+
+      letterInputRef.current.focus();
+    }
+
   return (
     <div className='game'>
       <p className='score'>
@@ -35,8 +50,14 @@ const Game = ({verifyLetter,
 
       <div className="letterContainer">
         <p>Try to gues a letter from the word:</p>
-        <form>
-          <input type='text' name='letter' maxLength="1" required/>
+        <form onSubmit={handleSubmit}>
+          <input type='text' 
+          name='letter' 
+          maxLength="1" 
+          onChange={(e)=> setLetter(e.target.value)} 
+          value={letter}
+          ref={letterInputRef}
+          required/>
           <button>Send</button>
         </form>
       </div>
